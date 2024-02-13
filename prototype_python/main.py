@@ -61,7 +61,7 @@ def process_videos_in_folder(folder_path):
 
 if __name__ == "__main__":
     # Spécifiez le chemin du dossier contenant les vidéos
-    videos_folder_path = "C:/Users/amaur/Videos"
+    videos_folder_path = "C:/Users/amaur/Videos/test"
 
     # Traiter toutes les vidéos dans le dossier
     process_videos_in_folder(videos_folder_path)
