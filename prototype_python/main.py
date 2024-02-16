@@ -19,7 +19,7 @@ def convert_video_to_audio(video_path, audio_path):
     # Normaliser le chemin du fichier audio
     audio_path = os.path.abspath(audio_path)
 
-    # Sauvegarder l'audio2
+    # Sauvegarder l'audio
     audio_clip.write_audiofile(audio_path)
 
     audio_clip.close()
