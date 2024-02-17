@@ -42,7 +42,7 @@ def compress_audio(input_audio_path, output_audio_path):
     os.remove(input_audio_path)
 
 def process_videos_in_folder(folder_path):
-    # Parcourir tous les fichiers du dossier2
+    # Parcourir tous les fichiers du dossier
     for filename in os.listdir(folder_path):
         if filename.endswith((".mkv", ".mp4")):
             video_path = os.path.join(folder_path, filename)
