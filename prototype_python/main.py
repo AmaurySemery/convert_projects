@@ -38,7 +38,7 @@ def compress_audio(input_audio_path, output_audio_path):
     # Compresser sans perte de qualité
     audio.export(output_audio_path, format="mp3", bitrate="320k")
 
-    # Supprimer le fichier audio d'origine3
+    # Supprimer le fichier audio d'origine
     os.remove(input_audio_path)
 
 def process_videos_in_folder(folder_path):
