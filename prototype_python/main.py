@@ -47,7 +47,7 @@ def process_videos_in_folder(folder_path):
         if filename.endswith((".mkv", ".mp4")):
             video_path = os.path.join(folder_path, filename)
 
-            # Déterminer le chemin pour l'audio et l'audio compressé
+            # Déterminer le chemin pour l'audio et l'audio compressés
             audio_path = os.path.splitext(video_path)[0] + ".mp3"
             compressed_audio_path = os.path.splitext(video_path)[0] + "_compressed.mp3"
 
