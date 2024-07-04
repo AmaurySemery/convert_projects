@@ -2,44 +2,60 @@ import os
 import time
 from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
+import subprocess
 
 def convert_video_to_audio(video_path, audio_path):
-    # Convertir les fichiers MKV en MP4
-    if video_path.lower().endswith(".mkv"):
-        mp4_path = os.path.splitext(video_path)[0] + ".mp4"
-        os.system(f"ffmpeg -i \"{video_path}\" -c:v libx264 -crf 23 -c:a aac -strict experimental -b:a 192k -ac 2 \"{mp4_path}\"")
-        video_path = mp4_path
+    try:
+        # Convertir les fichiers MKV en MP4
+        if video_path.lower().endswith(".mkv"):
+            mp4_path = os.path.splitext(video_path)[0] + ".mp4"
+            try:
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-i", video_path,
+                        "-c:v", "libx264",
+                        "-crf", "23",
+                        "-c:a", "aac",
+                        "-strict", "experimental",
+                        "-b:a", "192k",
+                        "-ac", "2",
+                        mp4_path
+                    ],
+                    check=True
+                )
+                video_path = mp4_path
+                print(f"Conversion réussie : {video_path}")
+            except subprocess.CalledProcessError as e:
+                print(f"Erreur lors de la conversion : {e}")
+            except FileNotFoundError:
+                print("ffmpeg n'est pas installé ou n'est pas accessible dans le PATH.")
+        else:
+            print("Le fichier n'est pas un fichier MKV.")
 
-    # Charger la vidéo
-    video_clip = VideoFileClip(video_path)
+        # Charger la vidéo
+        video_clip = VideoFileClip(video_path)
 
-    # Extraire l'audio
-    audio_clip = video_clip.audio
+        # Extraire l'audio
+        audio_clip = video_clip.audio
 
-    # Normaliser le chemin du fichier audio
-    audio_path = os.path.abspath(audio_path)
+        # Normaliser le chemin du fichier audio
+        audio_path = os.path.abspath(audio_path)
 
-    # Sauvegarder l'audio
-    audio_clip.write_audiofile(audio_path)
+        # Sauvegarder l'audio
+        audio_clip.write_audiofile(audio_path)
 
-    audio_clip.close()
-    video_clip.close()
+        audio_clip.close()
+        video_clip.close()
 
-    # Attendre quelques secondes pour s'assurer que la conversion vidéo en audio est terminée
-    time.sleep(5)
+        # Attendre quelques secondes pour s'assurer que la conversion vidéo en audio est terminée
+        time.sleep(5)
 
-    # Supprimer le fichier vidéo d'origine
-    os.remove(video_path)
-
-def compress_audio(input_audio_path, output_audio_path):
-    # Charger l'audio
-    audio = AudioSegment.from_file(input_audio_path)
-
-    # Compresser sans perte de qualité
-    audio.export(output_audio_path, format="mp3", bitrate="320k")
-
-    # Supprimer le fichier audio d'origine
-    os.remove(input_audio_path)
+        # Supprimer le fichier vidéo d'origine
+        os.remove(video_path)
+    except:
+        print("convert_video_to_audio fail")
+        pass
 
 def process_videos_in_folder(folder_path):
     # Parcourir tous les fichiers du dossier
@@ -53,9 +69,6 @@ def process_videos_in_folder(folder_path):
 
             # Conversion vidéo vers audio
             convert_video_to_audio(video_path, audio_path)
-
-            # Compression audio sans perte de qualité
-            compress_audio(audio_path, compressed_audio_path)
 
             print(f"Conversion, compression et suppression terminées pour {filename}")
 
